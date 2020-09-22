@@ -3,9 +3,9 @@ package main
 import "fmt"
 
 const (
-	ACAP = 8
-	BCAP = 5
-	CCAP = 3
+	ACAP     = 8
+	BCAP     = 5
+	CCAP     = 3
 	ENDVALUE = 4
 )
 
@@ -39,7 +39,7 @@ func (n *node) checkEqual(s step) bool {
 	return false
 }
 
-func findNode(n *node, s step) bool{
+func findNode(n *node, s step) bool {
 	if n == nil {
 		return false
 	}
@@ -57,7 +57,7 @@ func findNode(n *node, s step) bool{
 	return false
 }
 
-func checkEnd(s step) bool{
+func checkEnd(s step) bool {
 	if s.a == ENDVALUE ||
 		s.b == ENDVALUE {
 		return true
@@ -65,7 +65,7 @@ func checkEnd(s step) bool{
 	return false
 }
 
-func pour(bucket1, bucket2, cap int) (a int, b int, check bool){
+func pour(bucket1, bucket2, cap int) (a int, b int, check bool) {
 	if bucket1 > 0 &&
 		bucket2 < cap {
 		if bucket1 >= (cap - bucket2) {
@@ -83,7 +83,7 @@ func pour(bucket1, bucket2, cap int) (a int, b int, check bool){
 
 func appendAndEnd(s step, parent *node) (*node, bool) {
 	newNode := &node{
-		s: s,
+		s:      s,
 		parent: parent,
 		childs: make([]*node, 0),
 	}
@@ -91,7 +91,7 @@ func appendAndEnd(s step, parent *node) (*node, bool) {
 	if !findNode(root, s) {
 		//将此step加入到树中
 		parent.childs = append(parent.childs, newNode)
-		if checkEnd(s){
+		if checkEnd(s) {
 			printSteps(newNode)
 			return newNode, false
 		}
@@ -101,7 +101,7 @@ func appendAndEnd(s step, parent *node) (*node, bool) {
 	return nil, false
 }
 
-func printSteps(n *node){
+func printSteps(n *node) {
 	fmt.Println("---------------------")
 	steps := make([]step, 0)
 	for n != nil {
@@ -124,9 +124,9 @@ func main() {
 			if !checkEnd(pCurNode.s) {
 				s := pCurNode.s
 				//A to B
-				if x,y,ok := pour(s.a, s.b, BCAP); ok{
-					tmpStep := step{x,y,s.c}
-					n,ok := appendAndEnd(tmpStep, pCurNode)
+				if x, y, ok := pour(s.a, s.b, BCAP); ok {
+					tmpStep := step{x, y, s.c}
+					n, ok := appendAndEnd(tmpStep, pCurNode)
 					if n != nil {
 						thisList = append(thisList, n)
 					}
@@ -135,9 +135,9 @@ func main() {
 					}
 				}
 				//A to C
-				if x,y,ok := pour(s.a, s.c, CCAP); ok{
-					tmpStep := step{x,s.b,y}
-					n,ok := appendAndEnd(tmpStep, pCurNode)
+				if x, y, ok := pour(s.a, s.c, CCAP); ok {
+					tmpStep := step{x, s.b, y}
+					n, ok := appendAndEnd(tmpStep, pCurNode)
 					if n != nil {
 						thisList = append(thisList, n)
 					}
@@ -146,9 +146,9 @@ func main() {
 					}
 				}
 				//B to A
-				if x,y,ok := pour(s.b, s.a, ACAP); ok{
-					tmpStep := step{y,x,s.c}
-					n,ok := appendAndEnd(tmpStep, pCurNode)
+				if x, y, ok := pour(s.b, s.a, ACAP); ok {
+					tmpStep := step{y, x, s.c}
+					n, ok := appendAndEnd(tmpStep, pCurNode)
 					if n != nil {
 						thisList = append(thisList, n)
 					}
@@ -157,9 +157,9 @@ func main() {
 					}
 				}
 				//B to C
-				if x,y,ok := pour(s.b, s.c, CCAP); ok{
-					tmpStep := step{s.a,x,y}
-					n,ok := appendAndEnd(tmpStep, pCurNode)
+				if x, y, ok := pour(s.b, s.c, CCAP); ok {
+					tmpStep := step{s.a, x, y}
+					n, ok := appendAndEnd(tmpStep, pCurNode)
 					if n != nil {
 						thisList = append(thisList, n)
 					}
@@ -168,9 +168,9 @@ func main() {
 					}
 				}
 				//C to A
-				if x,y,ok := pour(s.c, s.a, ACAP); ok{
-					tmpStep := step{y,s.b,x}
-					n,ok := appendAndEnd(tmpStep, pCurNode)
+				if x, y, ok := pour(s.c, s.a, ACAP); ok {
+					tmpStep := step{y, s.b, x}
+					n, ok := appendAndEnd(tmpStep, pCurNode)
 					if n != nil {
 						thisList = append(thisList, n)
 					}
@@ -179,9 +179,9 @@ func main() {
 					}
 				}
 				//C to B
-				if x,y,ok := pour(s.c, s.b, BCAP); ok{
-					tmpStep := step{s.a,y,x}
-					n,ok := appendAndEnd(tmpStep, pCurNode)
+				if x, y, ok := pour(s.c, s.b, BCAP); ok {
+					tmpStep := step{s.a, y, x}
+					n, ok := appendAndEnd(tmpStep, pCurNode)
 					if n != nil {
 						thisList = append(thisList, n)
 					}
@@ -195,5 +195,6 @@ func main() {
 		pCurHeader = thisList
 	}
 END:
+	fmt.Println("---------------------")
 	fmt.Println("GAME OVER")
 }
